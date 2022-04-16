@@ -47,35 +47,37 @@ var onChange = function(evt) {
 			arrayOfHours[i].classList.remove("active");
 	}
 	arrayOfHours = [];
-	let codigo = evt.target.value;
-	let turnos = ['M','m','T','t','N','n'];
-	let turno;
-	if(turnos.some(function(turn){
-		turno = turn;
-		return codigo.includes(turn);
-	})){
-		let arrayOfDays = codigo.split(turno)[0].split('');
-		let hours = codigo.split(turno)[1];
-		turno = turno.toUpperCase();
-		arrayOfDays = arrayOfDays.map( hour => hour+turno);
-		if(hours!=''){
-			let arrayOfDaysAndHours = [];
-			hours = hours.split('');
-			for (var i = 0; i < hours.length; i++) {
-				for (var j = 0; j < arrayOfDays.length; j++) {
-					arrayOfDaysAndHours.push(arrayOfDays[j]+hours[i]);
+	let codigoTotal = evt.target.value.split(' ');
+
+	codigoTotal.forEach(codigo => {
+		let turnos = ['M','m','T','t','N','n'];
+		let turno;
+		if(turnos.some(function(turn){
+			turno = turn;
+			return codigo.includes(turn);
+		})){
+			let arrayOfDays = codigo.split(turno)[0].split('');
+			let hours = codigo.split(turno)[1];
+			turno = turno.toUpperCase();
+			arrayOfDays = arrayOfDays.map( hour => hour+turno);
+			if(hours!=''){
+				let arrayOfDaysAndHours = [];
+				hours = hours.split('');
+				for (var i = 0; i < hours.length; i++) {
+					for (var j = 0; j < arrayOfDays.length; j++) {
+						arrayOfDaysAndHours.push(arrayOfDays[j]+hours[i]);
+					}
 				}
+				activeFields(arrayOfDaysAndHours);
+			}else{
+				activeFields(arrayOfDays);
 			}
-			activeFields(arrayOfDaysAndHours);
+			
 		}else{
+			let arrayOfDays = codigo.split('');
 			activeFields(arrayOfDays);
 		}
-		
-	}else{
-		let arrayOfDays = codigo.split('');
-		activeFields(arrayOfDays);
-	}
-  
+	});
 };
 
 function activeFields(ids){
